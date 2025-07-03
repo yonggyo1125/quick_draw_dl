@@ -24,4 +24,13 @@ image = np.invert(np.array(Image.open(image_path).resize((224, 224))))
 categories = np.load(base_path + '/category.npy')
 
 # 추론 하기
+predictions = model.predict(image[np.newaxis, :, :, :])[0]
+indexes = np.argsort(predictions).tolist()
+indexes.reverse()
+indexes = indexes[:5]
+
+items = np.column_stack((categories[indexes], np.round(predictions[indexes], decimals=3))).tolist()
+print(json.dumps(items))
+
+
  
